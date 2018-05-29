@@ -1,0 +1,40 @@
+CREATE TABLE Profesores
+(   DNI           NUMBER(30) CONSTRAINT prof_dni_pk PRIMARY KEY, 
+    Nombre        VARCHAR2(30) CONSTRAINT prof_nom_nn NOT NULL, 
+    Apellidos     VARCHAR2(30) CONSTRAINT prof_ape_nn NOT NULL, 
+    Titulacion    VARCHAR2(30) CONSTRAINT prof_tit_nn NOT NULL, 
+    Nacimiento    DATE         CONSTRAINT prof_nac_nn NOT NULL, 
+    Direccion     VARCHAR2(30) CONSTRAINT prof_dir_nn NOT NULL, 
+    Ciudad        VARCHAR2(30) CONSTRAINT prof_ciu_nn NOT NULL, 
+    CodigoPostal  NUMBER(5)    CONSTRAINT prof_cod_nn NOT NULL , 
+    FechaContrato DATE         CONSTRAINT prof_fec_nn NOT NULL
+);
+
+CREATE TABLE Cursos
+(   CodigoCurso VARCHAR2(30) CONSTRAINT cur_cogcur_pk PRIMARY KEY, 
+    Nombre      VARCHAR2(30) CONSTRAINT cur_nomcur_nn  NOT NULL, 
+    CodigoSede  VARCHAR2(30) CONSTRAINT cur_codsede_nn NOT NULL, 
+    Materia     VARCHAR2(30) CONSTRAINT cur_mat_nn     NOT NULL, 
+    Inicio      DATE         CONSTRAINT cur_ini_nn     NOT NULL
+);
+
+CREATE TABLE Impartir
+(   DNI, 
+    CodigoCurso, 
+    HorasImpartidas NUMBER(3) CONSTRAINT imp_horas_nn NOT NULL,
+    CONSTRAINT imp_dni_fk FOREIGN KEY(DNI)         REFERENCES Profesores(DNI),
+    CONSTRAINT imp_cog_fk FOREIGN KEY(CodigoCurso) REFERENCES Cursos(CodigoCurso)
+);
+
+CREATE TABLE Sede
+(   CodigoSede    VARCHAR2(30) CONSTRAINT sede_cod_pk PRIMARY KEY, 
+    Direccion     VARCHAR2(30) CONSTRAINT sede_dir_nn NOT NULL, 
+    Localidad     VARCHAR2(30) CONSTRAINT sede_loc_nn NOT NULL, 
+    CodigoPostal  NUMBER(5)    CONSTRAINT sede_cod_nn NOT NULL, 
+    CodigoCurso   VARCHAR2(30),
+    CONSTRAINT sede_codcurso_fk FOREIGN KEY(CodigoCurso) REFERENCES Cursos(CodigoCurso)
+);
+
+2.-
+ CREATE INDEX upper_nom_idx
+ ON Profesores(UPPER(Nombre));
